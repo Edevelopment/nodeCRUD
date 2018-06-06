@@ -1,3 +1,4 @@
+"use strict"
 var express = require('express');
 var router = express.Router();
 
@@ -7,8 +8,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/home', function(req, res, next) {
-	ctrl = require('../controllers/pages.js');
-	ctrl.getIndex();
+	var req = require('../controllers/pages.js');
+	req.getIndex();
 	res.sendStatus(200);
 });
 
