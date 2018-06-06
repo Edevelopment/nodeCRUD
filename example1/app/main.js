@@ -1,3 +1,4 @@
+"use strict"
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -21,8 +22,11 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 var normalizedPath = require("path").join(__dirname, "../models");
 
-require("fs").readdirSync(normalizedPath).forEach(function(file) {
-  require("../models/" + file);
+require("../models/basemodel.js", function() {
+	require("fs").readdirSync(normalizedPath).forEach(function(file) {
+		if (file == 'basemodel.js') return;
+		require("../models/" + file);
+	});
 });
 
 app.use('/', indexRouter);
