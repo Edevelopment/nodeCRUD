@@ -3,7 +3,7 @@ class BaseModel{
     constructor() {
         this.connectToDB();
     }
-    
+
 	// Так выглядит геттер
 	get name() {
 		return '';
@@ -15,12 +15,19 @@ class BaseModel{
 	}
 
     connectToDB() {
-        settings = {
-            host: 'mysql55',
+        let settings = {
+            host: '127.0.0.1',
             database: 'nodedb',
             user: 'root',
             password: ''
         };
-        this.qb = require('node-querybuilder').QueryBuilder(settings, 'mysql', 'single');
+        this.db = require('mysql').createConnection(settings);
+        this.db.connect();
+    }
+
+    desctuctor() {
+        this.db.end();
     }
 }
+
+module.exports = BaseModel;

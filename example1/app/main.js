@@ -4,16 +4,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
 
 var indexRouter = require('../routes/index');
+var adminRouter = require('../routes/admin');
 var usersRouter = require('../routes/users');
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, '../views'));
+app.set('views', path.join(__dirname, '../templates'));
 app.set('view engine', 'jade');
 
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -22,14 +25,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 var normalizedPath = require("path").join(__dirname, "../models");
 
-require("../models/basemodel.js", function() {
-	require("fs").readdirSync(normalizedPath).forEach(function(file) {
-		if (file == 'basemodel.js') return;
-		require("../models/" + file);
-	});
-});
-
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
+app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
 
 // Ошибки со стороны пользователя
@@ -40,7 +37,7 @@ app.use(function(req, res, next) {
 // Ошибки со стороны сервера
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'dev' ? err : {};
 
   res.status(err.status || 500);
   res.render('error');
