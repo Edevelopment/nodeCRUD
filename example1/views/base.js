@@ -2,22 +2,22 @@
 var lang = require('../lang/ru');
 
 class BaseView {
-	constructor(res, layout) {
-		if (typeof layout === 'undefined') {
-			layout = 'baselayout';
-		}
-
-		this.layout = layout;
+	constructor(res) {
 		this.res = res;
+
+		this.res.set('Access-Control-Allow-Origin', 'http://localhost:8084');
+		this.res.set('Access-Control-Allow-Credentials', 'true');
+
 		this.lang = lang;
 	};
 
-	render(template, data) {
-		this.res.set('Access-Control-Allow-Origin', 'http://localhost:8084');
-		this.res.set('Access-Control-Allow-Credentials', 'true');
-		this.res.type('json');
-		this.res.json(data);
-	};
+	sendStatus(message) {
+		this.res.sendStatus(message);
+	}
+
+	send(message) {
+		this.res.json(message);
+	}
 }
 
 module.exports = BaseView;

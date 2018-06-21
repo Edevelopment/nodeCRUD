@@ -6,51 +6,80 @@ class CrudController extends BaseController {
 	}
 
 	indexAction() {
-		this.model.db.query('SELECT * FROM pages ', (err, results, fields) => {	
-			if (err) { 
-				console.error(err);
-				return;
-			};
-			this.view.render('index', results);
+		this.model.findAll((err, results, fields) => {
+			if (err) { console.error(err);return;};
+			this.view.send(results);
 			this.model.db.end();
 		});
 	}
 
 	createAction() {
-		this.res.send('admin create');
+		this.model.pullData(this.req.body).add((err, results, fields) => {	
+			if (err) { 
+				console.error(err);
+				this.view.sendStatus(500);
+				return;
+			};
+			this.view.sendStatus(200);
+			this.model.db.end();
+		}, () => {
+			this.view.sendStatus(400);
+			this.model.db.end();
+		});
 	}
+
 
 	saveAction() {
 		this.res.send('admin save');
 	}
 
 	readAction(id) {
-		console.log(this.req.session.views);
-		if (this.req.session.views) {
-			this.req.session.views++;
-			this.res.set('Access-Control-Allow-Origin', 'http://localhost:8084');
-			this.res.set('Access-Control-Allow-Credentials', 'true');
-			this.res.type('json');
-			this.res.json();
-		} else {
-			this.req.session.views = 1
-			this.res.set('Access-Control-Allow-Origin', 'http://localhost:8084');
-			this.res.set('Access-Control-Allow-Credentials', 'true');
-			this.res.type('json');
-			this.res.json();
-		}
-	}
-
-	editAction(id) {
-		this.res.send('admin edit ' + id);
+		this.model.findOne(id, (err, results, fields) => {
+			if (err) { console.error(err); return;};
+			this.view.send(results);
+			this.model.db.end();
+		});
 	}
 
 	updateAction(id) {
-		this.res.send('admin update');
+		this.model.update(id, this.req.body, (err, results, fields) => {	
+			if (err) { 
+				console.error(err);
+				this.view.sendStatus(500);
+				return;
+			};
+			if (results.affectedRows > 0) {
+				let result = {
+					status: 'updated',
+				};
+				this.view.send(result);
+			} else {
+				this.view.sendStatus(200);
+			}
+			this.model.db.end();
+		});
 	}
 
 	deleteAction(id) {
-		this.res.send('admin delete');
+		this.model.delete(id, (err, results, fields) => {	
+			if (err) { 
+				console.error(err);
+				this.view.sendStatus(500);
+				return;
+			};
+			if (results.affectedRows > 0) {
+				let result = {
+					status: 'deleted',
+				};
+				this.view.send(result);
+			} else {
+				this.view.sendStatus(200);
+			}
+			this.model.db.end();
+		}, () => {
+			this.view.sendStatus(400);
+			this.model.db.end();
+		});
 	}
 }
 
