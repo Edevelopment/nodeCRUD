@@ -1,6 +1,7 @@
 "use strict"
-var BaseModel = require('./basemodel');
-class PageModel extends BaseModel {
+var CrudModel = require('./crudmodel');
+
+class PageModel extends CrudModel {
     constructor() {
     	super();
 
@@ -11,6 +12,7 @@ class PageModel extends BaseModel {
 		};
 
 		this.pushFields = {
+			id: 'integer',
 			title: 'string',
 			description : 'description',
 			text : 'text',
@@ -18,6 +20,8 @@ class PageModel extends BaseModel {
 
     	this.tablename = 'pages';
     }
+
+
 }
 
 module.exports = PageModel;
