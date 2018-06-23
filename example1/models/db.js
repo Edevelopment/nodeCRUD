@@ -3,14 +3,21 @@ class DB {
 	constructor() {
         this.pullFields = {};
         this.pulledData = {};
-
-		let dateTime = require('node-datetime');
-        this.dateTime = dateTime;
+        this.addHelpers();
 
 	    this.connectToDB();
 	}
 
-	prepareFindByResults(rows) {
+	addHelpers() {
+		this.helpers = {};
+
+		let dateTime = require('node-datetime');
+        this.helpers.dateTime = dateTime;
+
+        this.helpers.strings = require('../helpers/strings');
+	}
+
+	prepareFindByResults(rows, limit) {
         let results = [];
 
         for (let row in rows) {
@@ -19,6 +26,7 @@ class DB {
             results.push(entity);
         }
 
+        if (limit == 1) return results[0]; 
         return results;
     }
 
@@ -56,7 +64,7 @@ class DB {
 
     findBy(where, callback, orderBy, limit, offset) {
         this.db.query(this.prepareFindByQuery(where, orderBy, limit, offset), (err, rows, fields) => {
-            let results = this.prepareFindByResults(rows);
+            let results = this.prepareFindByResults(rows, limit);
 
             callback(err, results, fields);
         });

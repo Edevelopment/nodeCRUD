@@ -20,7 +20,9 @@ class BaseView {
 	}
 
 	sendAllowedHttpMethods() {
-		this.res.set('Access-Control-Allow-Methods', '	GET, POST, OPTIONS, PUT, DELETE');
+		this.res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+		this.res.set('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+
 		this.sendStatus(200);
 	}
 }

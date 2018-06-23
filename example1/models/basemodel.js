@@ -7,11 +7,19 @@ class BaseModel extends DB{
 
     // Подготовка данных для отображения
     pushValue(field, value) {
+        if (typeof this['push' + this.helpers.strings.ucfirst(field) + 'Value'] === 'function') {
+            return this['push' + this.helpers.strings.ucfirst(field) + 'Value'](value);
+        }
+
         return value;
     }
 
     // Подготовка данных для сохранения
     pullValue(field, value) {
+        if (typeof this['pull' + this.helpers.strings.ucfirst(field) + 'Value'] === 'function') {
+            value = this['pull' + this.helpers.strings.ucfirst(field) + 'Value'](value);
+        }
+
         this.pulledData[field] = value;
         return this;
     }
@@ -23,7 +31,7 @@ class BaseModel extends DB{
 
 	// Так выглядит сеттер
 	set name(newName) {
-		this.name = newName;
+		this.name = newName;      
 	}
 
     pullData(data) {
@@ -33,7 +41,7 @@ class BaseModel extends DB{
             this.pullValue(key, data[key]);
         }
 
-        this.pullValue('updated', this.dateTime.create().now());
+        this.pullValue('updated', this.helpers.dateTime.create().now());
 
         return this;
     }
@@ -51,7 +59,7 @@ class BaseModel extends DB{
     }
 
     addCreatedData() {
-        this.pullValue('created', this.dateTime.create().now());
+        this.pullValue('created', this.helpers.dateTime.create().now());
         return this;
     }
 }

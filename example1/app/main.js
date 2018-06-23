@@ -20,8 +20,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
-var normalizedPath = require("path").join(__dirname, "../models");
-
 // app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
@@ -30,7 +28,6 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
 
 // Ошибки со стороны сервера
 app.use(function(err, req, res, next) {
