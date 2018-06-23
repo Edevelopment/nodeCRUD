@@ -16,6 +16,19 @@ router.get('/', function(req, res, next) {
 	}
 });
 
+router.options('*', function (req, res, next) {
+	console.log('test');
+	try {
+		let required = require('../controllers/admin/index');
+		let controller = new required(res, req);
+
+		controller.showAllowedHttpMethods();
+	} catch(e)  {
+		console.error(e);
+		res.sendStatus(404);
+	}	
+})
+
 /* Вызов контроллера и Index экшона */
 router.get('/:controller/', function(req, res, next) {
 	try {
@@ -90,7 +103,6 @@ router.delete('/:controller/delete/:id', function(req, res, next) {
 router.get('/:controller/:action/:id', function(req, res, next) {
 	try {
 		if (!Number.isInteger(parseInt(req.params.id)) || parseInt(req.params.id) <= 0) return res.sendStatus(404);
-		console.log(req.params.id);
 
 		let required = require('../controllers/admin/' + req.params.controller);
 		let controller = new required(res, req);

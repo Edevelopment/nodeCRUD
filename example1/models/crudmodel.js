@@ -23,7 +23,6 @@ class CrudModel extends BaseModel{
 	            + '; ' + 
 	            this.prepareCountQuery(where);
 
-	            console.log(sql);
 
 	    this.db.query(sql, (err, results, fields) => {
 	        let data = this.prepareFindByResults(results[0]);

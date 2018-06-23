@@ -18,6 +18,11 @@ class BaseView {
 	send(message) {
 		this.res.json(message);
 	}
+
+	sendAllowedHttpMethods() {
+		this.res.set('Access-Control-Allow-Methods', '	GET, POST, OPTIONS, PUT, DELETE');
+		this.sendStatus(200);
+	}
 }
 
 module.exports = BaseView;

@@ -12,7 +12,7 @@ class BaseModel extends DB{
 
     // Подготовка данных для сохранения
     pullValue(field, value) {
-        this.pullFields[field] = value;
+        this.pulledData[field] = value;
         return this;
     }
 

@@ -2,6 +2,7 @@
 class DB {
 	constructor() {
         this.pullFields = {};
+        this.pulledData = {};
 	    this.connectToDB();
 	}
 
@@ -49,7 +50,7 @@ class DB {
 
     findBy(where, callback, orderBy, limit, offset) {
         this.db.query(this.prepareFindByQuery(where, orderBy, limit, offset), (err, rows, fields) => {
-            let results = this.prepareFindByResults();
+            let results = this.prepareFindByResults(rows);
 
             callback(err, results, fields);
         });
@@ -79,18 +80,20 @@ class DB {
     }
 
     add(callback, errCallback) {
-        this.db.query('INSERT INTO ' + this.tablename + ' SET ?', this.pullFields, (err, results, fields) => {callback(err, results, fields)});
+        this.db.query('INSERT INTO ' + this.tablename + ' SET ?', this.pulledData, (err, results, fields) => {callback(err, results, fields)});
     }
 
     delete(id, callback, errCallback) {
         this.db.query('DELETE FROM ' + this.tablename + ' WHERE id = ' + id, (err, results, fields) => {callback(err, results, fields)});
     }
 
-    update(id, data, callback) {
-        let subquery = Object.keys(data).join(' = ?, ');
+    update(id, callback) {
+        let subquery = Object.keys(this.pulledData).join(' = ?, ');
         subquery += ' = ?';
+
         let query = 'UPDATE ' + this.tablename + ' SET ' + subquery + ' WHERE id = ?';
-        let insertedData = Object.values(data);
+        let insertedData = Object.values(this.pulledData);
+
         insertedData.push(id);
         this.db.query(query, insertedData, (err, results, fields) => {callback(err, results, fields)});
     }
