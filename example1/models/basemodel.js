@@ -33,6 +33,8 @@ class BaseModel extends DB{
             this.pullValue(key, data[key]);
         }
 
+        this.pullValue('updated', this.dateTime.create().now());
+
         return this;
     }
 
@@ -48,9 +50,9 @@ class BaseModel extends DB{
         return result;
     }
 
-    // Функция для проверки чего-то там
-    checkDataFields(data) {
-        return true;
+    addCreatedData() {
+        this.pullValue('created', this.dateTime.create().now());
+        return this;
     }
 }
 

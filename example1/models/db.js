@@ -3,6 +3,10 @@ class DB {
 	constructor() {
         this.pullFields = {};
         this.pulledData = {};
+
+		let dateTime = require('node-datetime');
+        this.dateTime = dateTime;
+
 	    this.connectToDB();
 	}
 
@@ -20,7 +24,7 @@ class DB {
 
     prepareCountQuery(where) {
     	if (typeof where === 'undefined') {
-    		where = '1=1';
+    		where = 'active=Y';
     	}
 
         return 'SELECT COUNT(*) as count FROM ' + this.tablename + ' WHERE ' + where;
@@ -36,6 +40,8 @@ class DB {
         } else if (where.length == 0) {
         	where = '1=1';
         }
+
+       	where += ' AND active=1 ';
 
         if (typeof limit === 'undefined') {
             limit = 1000;
@@ -80,6 +86,7 @@ class DB {
     }
 
     add(callback, errCallback) {
+    	this.addCreatedData();
         this.db.query('INSERT INTO ' + this.tablename + ' SET ?', this.pulledData, (err, results, fields) => {callback(err, results, fields)});
     }
 
@@ -95,7 +102,7 @@ class DB {
         let insertedData = Object.values(this.pulledData);
 
         insertedData.push(id);
-        this.db.query(query, insertedData, (err, results, fields) => {callback(err, results, fields)});
+        let queried = this.db.query(query, insertedData, (err, results, fields) => {callback(err, results, fields)});
     }
 
     prepareLikeRequest(searchString) {
@@ -114,6 +121,7 @@ class DB {
 
     	return sql;
     }
+
 }
 
 module.exports = DB;
