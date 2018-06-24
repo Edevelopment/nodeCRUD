@@ -1,2 +1,2 @@
 # nodeCRUD
-CRUD на express.js с MVC
+тестовый CRUD на express.js с MVC
