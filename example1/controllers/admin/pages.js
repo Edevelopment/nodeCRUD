@@ -6,6 +6,11 @@ class PagesController extends CrudController {
 		super(res, req);
 		this.model = new PageModel;
 	}
+
+	sendTestMailAction() {
+		this.model.sendMessageToAdmin();
+		this.view.sendStatus(200);
+	}
 }
 
 module.exports = PagesController;

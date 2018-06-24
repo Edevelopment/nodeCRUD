@@ -5,7 +5,7 @@ var migrationsFiles = fs.readdirSync('./queries');
 
 // подключаемся к базе
 let mysql = require('mysql');
-var con = mysql.createConnection(require('../configs.json')[process.env.NODE_ENV]);
+var con = mysql.createConnection(require('../configs.json')['db'][process.env.NODE_ENV]);
 
 con.connect(function(err) {
 	if (err) throw err;

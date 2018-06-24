@@ -1,10 +1,18 @@
 {
-	"development" : {
-		"host": "127.0.0.1",
-		"database": "nodedb",
-		"user": "root",
-		"multipleStatements": true,
-		"charset" : "utf8mb4",
-		"password": ""
+	"db" : {
+		"development" : {
+			"host": "127.0.0.1",
+			"database": "nodedb",
+			"user": "root",
+			"multipleStatements": true,
+			"charset" : "utf8mb4",
+			"password": ""
+		}
+	},
+	"mail" : {
+		"development" : {
+        	"host": "172.18.0.1",
+        	"port": 1025
+		}
 	}
 }

@@ -51,6 +51,10 @@ class CrudModel extends BaseModel{
 
 		return piecesOrderBy[0] + ' ' + piecesOrderBy[1];
 	}
+
+	sendMessageToAdmin() {
+		this.helpers.mail.send('eduardeliseev.m@gmail.com', 'Hello Bro!', '<h1>HEEEEE<sup>LLLL</sup>OO!!</h2>');
+	}
 }
 
 module.exports = CrudModel;

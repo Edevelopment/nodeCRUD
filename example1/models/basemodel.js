@@ -3,7 +3,19 @@ var DB = require('./db');
 class BaseModel extends DB{
     constructor() {
         super();
+        this.addHelpers();
     }
+
+    addHelpers() {
+        this.helpers = {};
+
+        let dateTime = require('node-datetime');
+        this.helpers.dateTime = dateTime;
+
+        this.helpers.strings = require('../helpers/strings');
+        this.helpers.mail = require('../helpers/mail');
+    }
+
 
     // Подготовка данных для отображения
     pushValue(field, value) {

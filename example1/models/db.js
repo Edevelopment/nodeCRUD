@@ -3,18 +3,8 @@ class DB {
 	constructor() {
         this.pullFields = {};
         this.pulledData = {};
-        this.addHelpers();
 
 	    this.connectToDB();
-	}
-
-	addHelpers() {
-		this.helpers = {};
-
-		let dateTime = require('node-datetime');
-        this.helpers.dateTime = dateTime;
-
-        this.helpers.strings = require('../helpers/strings');
 	}
 
 	prepareFindByResults(rows, limit) {
@@ -83,7 +73,7 @@ class DB {
     }
 
     connectToDB() {
-        let settings = require('../configs.json')[process.env.NODE_ENV];
+        let settings = require('../configs.json')['db'][process.env.NODE_ENV];
 
         this.db = require('mysql').createConnection(settings);
         this.db.connect();
