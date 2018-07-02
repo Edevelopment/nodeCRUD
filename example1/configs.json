@@ -7,11 +7,23 @@
 			"multipleStatements": true,
 			"charset" : "utf8mb4",
 			"password": ""
-		}
+		},
+		"production" : {
+            "host": "127.0.0.1",
+            "database":"c9",
+            "user": "sandbernar",
+            "multipleStatements": true,
+            "charset": "utf8mb4",
+            "password": ""
+        }
 	},
 	"mail" : {
 		"development" : {
-        	"host": "172.18.0.1",
+        	"host": "172.18.0.1", 
+        	"port": 1025
+		},
+		"production" : {
+        	"host": "172.18.0.1", 
         	"port": 1025
 		}
 	}

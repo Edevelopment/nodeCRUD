@@ -5,7 +5,7 @@ class BaseView {
 	constructor(res) {
 		this.res = res;
 
-		this.res.set('Access-Control-Allow-Origin', 'http://localhost:8084');
+		this.res.set('Access-Control-Allow-Origin', 'http://localhost:9527');
 		this.res.set('Access-Control-Allow-Credentials', 'true');
 
 		this.lang = lang;
@@ -21,7 +21,7 @@ class BaseView {
 
 	sendAllowedHttpMethods() {
 		this.res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-		this.res.set('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+		this.res.set('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, x-auth');
 
 		this.sendStatus(200);
 	}

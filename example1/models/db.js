@@ -16,7 +16,9 @@ class DB {
             results.push(entity);
         }
 
+        if (typeof results[0] === 'undefined') return [];
         if (limit == 1) return results[0]; 
+        
         return results;
     }
 
@@ -104,7 +106,7 @@ class DB {
     }
 
     prepareLikeRequest(searchString) {
-    	if (searchString.length == 0) return '1=1';
+    	if (typeof searchString === 'undefined' || searchString.length == 0) return '1=1';
 
     	searchString = '%' + searchString + '%';
     	searchString = this.db.escape(searchString);
