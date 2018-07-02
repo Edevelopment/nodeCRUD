@@ -14,11 +14,15 @@ class CrudController extends BaseController {
 	}
 
 	listAction() {
-		this.model.findFilteredData(this.req.query.filter, (err, results, fields) => {
+		let filter = '';
+		if (this.req.query.filter) {
+			filter = this.req.query.filter;
+		}
+		this.model.findFilteredData(filter, (err, results, fields) => {
 			if (err) { console.error(err);return;};
 			this.view.send(results);
 			this.model.db.end();
-		}, this.req.query.sort, this.req.query.per_page, this.req.query.page);	
+		}, this.req.query.sort, this.req.query.limit, this.req.query.page);	
 	}
 
 	createAction() {

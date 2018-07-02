@@ -26,18 +26,28 @@ function checkMagicNumbers(magic) {
 	if (magic == MAGIC_NUMBERS.jpg || magic == MAGIC_NUMBERS.jpg1 || magic == MAGIC_NUMBERS.png || magic == MAGIC_NUMBERS.gif) return true
 }
 
-/* Вызов Index контроллера и Index экшона */
-router.get('/', function(req, res, next) {
+/**
+ * Проверка 
+ * @param  {[type]} req   [description]
+ * @param  {[type]} res   [description]
+ * @param  {[type]} next) {             if (!req.headers['x-auth']) return next('router')  next()} [description]
+ * @return {[type]}       [description]
+ */
+router.use(function (req, res, next) {
+	if (req.url === '/user/login' || req.method == 'OPTIONS') {next(); return;};
+
 	try {
-		let required = require('../controllers/admin/index');
+		let required = require('../controllers/admin/user');
 		let controller = new required(res, req);
 
-		controller.indexAction();
+		controller.checkAuth(next);
 	} catch(e)  {
 		console.error(e);
 		res.sendStatus(404);
+		res.end();
 	}
-});
+
+})
 
 router.options('*', function (req, res, next) {
 	try {
@@ -49,15 +59,29 @@ router.options('*', function (req, res, next) {
 		console.error(e);
 		res.sendStatus(404);
 	}	
-})
+});
 
-/* Вызов контроллера и Index экшона */
-router.get('/:controller/', function(req, res, next) {
-	try {
+
+/* Вызов контроллера и create экшона */
+router.post('/:controller/create', function(req, res, next) {
+	try {	
 		let required = require('../controllers/admin/' + req.params.controller);	
 		let controller = new required(res, req);
 
-		controller.indexAction();
+		controller.createAction();
+	} catch(e)  {
+		console.error(e);
+		res.sendStatus(404);
+	}
+});
+
+/* Вызов контроллера и Index экшона */
+router.post('/user/login', function(req, res, next) {
+	try {
+		let required = require('../controllers/admin/user');	
+		let controller = new required(res, req);
+
+		controller.loginAction();
 	} catch(e)  {
 		console.error(e);
 		res.sendStatus(404);

@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS `ru_users` (
   `phone` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
 
-  `role` int(11) DEFAULT NULL,
+  `roles` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

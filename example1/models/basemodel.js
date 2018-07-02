@@ -9,8 +9,8 @@ class BaseModel extends DB{
     addHelpers() {
         this.helpers = {};
 
-        let dateTime = require('node-datetime');
-        this.helpers.dateTime = dateTime;
+        let moment = require('moment');
+        this.helpers.dateTime = moment;
 
         this.helpers.strings = require('../helpers/strings');
         this.helpers.mail = require('../helpers/mail');
@@ -20,7 +20,7 @@ class BaseModel extends DB{
     // Подготовка данных для отображения
     pushValue(field, value) {
         if (typeof this['push' + this.helpers.strings.ucfirst(field) + 'Value'] === 'function') {
-            return this['push' + this.helpers.strings.ucfirst(field) + 'Value'](value);
+            value = this['push' + this.helpers.strings.ucfirst(field) + 'Value'](value);
         }
 
         return value;
@@ -50,13 +50,15 @@ class BaseModel extends DB{
         for (let key in data) {
 
             if (!this.pullFields.hasOwnProperty(key)) continue;
+
             this.pullValue(key, data[key]);
         }
 
-        this.pullValue('updated', this.helpers.dateTime.create().now());
+        let dt = new this.helpers.dateTime();
+        this.pullValue('updated', dt.format('x'));
 
         return this;
-    }
+    }   
 
     pushData(data)  {
         let result = {};
@@ -71,7 +73,8 @@ class BaseModel extends DB{
     }
 
     addCreatedData() {
-        this.pullValue('created', this.helpers.dateTime.create().now());
+        let dt = new this.helpers.dateTime();
+        this.pullValue('created', dt.format('x'));
         return this;
     }
 }

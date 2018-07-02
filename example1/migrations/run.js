@@ -30,15 +30,21 @@ function runMigrations(callback) {
 function executeMigration(migrationFile, callback) {
 
 	// проверяем был ли запрос уже выполнен, делая запрос в таблицу migrations
-	con.query('SELECT * FROM migrations WHERE name = ?', [migrationFile] 	, (err, results, fields) => {
-		if (results.length >= 1) return callback();
+	con.query('SELECT * FROM migrations WHERE name = ?', [migrationFile], (err, results, fields) => {
+
+		if (results.length >= 1) {
+			if (typeof callback === 'function') {
+				return callback();
+			}
+			return;
+		};
 
 		fs.readFile('./queries/' + migrationFile, (err, migrationQuery) => {
-			if (err) throw err;
+			if (err) console.log(err);
 			con.query(migrationQuery.toString(), (err, results, fields) => {
-				if (err) throw err;
+				if (err) console.log(err);
 				con.query('INSERT INTO `migrations` SET ?', {name: migrationFile}, (err, results, fields) => {
-					if (err) throw err;
+					if (err) console.log(err);
 					console.log(migrationFile + ' executed');
 					if (typeof callback === 'function') {
 						callback();

@@ -3,7 +3,9 @@ var BaseModel = require('./basemodel');
 class CrudModel extends BaseModel{
 	findFilteredData(where, callback, orderBy, limit, page) {
 
-	    orderBy = this.buildOrderBy(orderBy);
+		if (typeof orderBy !== 'undefined' && orderBy.length) {
+	    	orderBy = this.buildOrderBy(orderBy);
+		}
 
 	    limit = parseInt(limit);
 	    if (isNaN(limit) || limit <= 0) {
@@ -22,7 +24,6 @@ class CrudModel extends BaseModel{
 	    let sql = this.prepareFindByQuery(where, orderBy, limit, offset) 
 	            + '; ' + 
 	            this.prepareCountQuery(where);
-
 
 	    this.db.query(sql, (err, results, fields) => {
 	        let data = this.prepareFindByResults(results[0]);
