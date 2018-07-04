@@ -41,14 +41,6 @@ class RequestModel extends CrudModel {
     	return value;
     }
 
-    pullFinish_dateValue(value) {
-        if (typeof value === 'undefined' || value == null || value == '') {
-            value = 0;
-        }
-    	let dt = new this.helpers.dateTime(value, 'DD-MM-YYYY HH:mm:ss');
-        return  dt.format('x');
-	}
-
     pushFinish_dateValue(value) {
         if (typeof value === 'undefined' || value == null || value == '') {
             value = 0;
