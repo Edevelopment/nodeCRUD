@@ -40,14 +40,6 @@ class RequestModel extends CrudModel {
 
     	return value;
     }
-
-    pushFinish_dateValue(value) {
-        if (typeof value === 'undefined' || value == null || value == '') {
-            value = 0;
-        }
-    	let dt = new this.helpers.dateTime(value, 'x');
-    	return dt.format('DD-MM-YYYY HH:mm:ss');
-	}
 }
 
 module.exports = RequestModel;
