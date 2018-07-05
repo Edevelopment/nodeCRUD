@@ -12,6 +12,7 @@ class NotificationModel extends CrudModel {
 		};
 
 		this.pushFields = {
+			id: 'integer',
 			title: 'string',
 			image : 'image',
 			text : 'text',
