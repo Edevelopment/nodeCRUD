@@ -22,7 +22,7 @@ class CrudController extends BaseController {
 			if (err) { console.error(err);return;};
 			this.view.send(results);
 			this.model.db.end();
-		}, this.req.query.sort, this.req.query.limit, this.req.query.page);	
+		}, this.req.query.orderBy, this.req.query.limit, this.req.query.page, this.req.query.sort);	
 	}
 
 	createAction() {
@@ -54,6 +54,7 @@ class CrudController extends BaseController {
 	}
 
 	updateAction(id) {
+		console.log(this.req.body);
 		this.model.pullData(this.req.body).update(id, (err, results, fields) => {	
 			if (err) { 
 				console.error(err);

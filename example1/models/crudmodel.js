@@ -1,7 +1,7 @@
 "use strict"
 var BaseModel = require('./basemodel');
 class CrudModel extends BaseModel{
-	findFilteredData(where, callback, orderBy, limit, page) {
+	findFilteredData(where, callback, orderBy, limit, page, sort) {
 
 		if (typeof orderBy !== 'undefined' && orderBy.length) {
 	    	orderBy = this.buildOrderBy(orderBy);
@@ -16,6 +16,13 @@ class CrudModel extends BaseModel{
 	    if (isNaN(page) || page <= 0) {
 	        page = 1;
 	    }
+	    
+	    
+	    if (sort === '-id') {
+	    	sort = 'desc';
+		}else{
+			sort = 'asc';
+		}
 
 	    let offset = limit * (page - 1);
 
