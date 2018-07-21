@@ -22,7 +22,7 @@ class CrudController extends BaseController {
 			if (err) { console.error(err);return;};
 			this.view.send(results);
 			this.model.db.end();
-		}, this.req.query.orderBy, this.req.query.limit, this.req.query.page, this.req.query.sort);	
+		}, this.req.query.sort, this.req.query.limit, this.req.query.page);	
 	}
 
 	createAction() {

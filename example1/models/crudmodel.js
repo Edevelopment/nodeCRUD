@@ -1,12 +1,13 @@
 "use strict"
 var BaseModel = require('./basemodel');
 class CrudModel extends BaseModel{
-	findFilteredData(where, callback, orderBy, limit, page, sort) {
-
+	findFilteredData(where, callback, orderBy, limit, page) {
+		
+		
 		if (typeof orderBy !== 'undefined' && orderBy.length) {
 	    	orderBy = this.buildOrderBy(orderBy);
 		}
-
+		console.log(orderBy);
 	    limit = parseInt(limit);
 	    if (isNaN(limit) || limit <= 0) {
 	        limit = 1000;
@@ -17,12 +18,6 @@ class CrudModel extends BaseModel{
 	        page = 1;
 	    }
 	    
-	    
-	    if (sort === '-id') {
-	    	sort = 'desc';
-		}else{
-			sort = 'asc';
-		}
 
 	    let offset = limit * (page - 1);
 
@@ -51,13 +46,19 @@ class CrudModel extends BaseModel{
 	}
 
 	buildOrderBy(frontEndOrderBy) {
-		let piecesOrderBy = frontEndOrderBy.split('|');
-		if (piecesOrderBy.length !== 2) return '';
-
-		if (!this.pushFields.hasOwnProperty(piecesOrderBy[0])) return '';
-		if (piecesOrderBy[1] !== 'desc' && piecesOrderBy[1] !== 'asc') return '';
-
-		return piecesOrderBy[0] + ' ' + piecesOrderBy[1];
+		let piecesOrderBy = frontEndOrderBy.slice(0, 1);
+		let piecesOrderByField = frontEndOrderBy.slice(1);
+		if (piecesOrderBy.length !== 1) return '';
+		if (piecesOrderBy === '+') {
+			piecesOrderBy = 'asc';
+		} else if(piecesOrderBy === '-') {
+			piecesOrderBy = 'desc';
+		} else {
+			return '';
+		}
+		if (!this.pushFields.hasOwnProperty(piecesOrderByField)) return '';
+		if (piecesOrderBy !== 'desc' && piecesOrderBy !== 'asc') return '';
+		return piecesOrderByField + ' ' + piecesOrderBy;
 	}
 
 	sendMessageToAdmin() {
