@@ -51,6 +51,7 @@ class CrudController extends BaseController {
 	}
 
 	updateAction(id) {
+		console.log(this.req.body);
 		this.model.pullData(this.req.body).update(id, (err, results, fields) => {	
 			if (err) { 
 				console.error(err);

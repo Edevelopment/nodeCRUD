@@ -31,7 +31,7 @@ class BaseModel extends DB{
         if (typeof this['pull' + this.helpers.strings.ucfirst(field) + 'Value'] === 'function') {
             value = this['pull' + this.helpers.strings.ucfirst(field) + 'Value'](value);
         }
-
+    
         this.pulledData[field] = value;
         return this;
     }
@@ -47,8 +47,8 @@ class BaseModel extends DB{
 	}
 
     pullData(data) {
+        
         for (let key in data) {
-
             if (!this.pullFields.hasOwnProperty(key)) continue;
 
             this.pullValue(key, data[key]);

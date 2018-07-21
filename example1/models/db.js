@@ -32,7 +32,7 @@ class DB {
 
     prepareFindByQuery(where, orderBy, limit, offset) {
         if (typeof orderBy === 'undefined' || orderBy.length == 0) {
-            orderBy = 'id ASC';
+            orderBy = 'id DESC';
         }
 
         if (typeof where === 'number') {

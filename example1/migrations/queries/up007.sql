@@ -1,0 +1,1 @@
+ALTER TABLE ru_requests CHANGE COLUMN `status` `status` INT(1) NULL DEFAULT '0';
