@@ -1,6 +1,6 @@
 "use strict"
 var CrudModel = require('./crudmodel');
-class UserModel extends CrudModel {
+class 	UserModel extends CrudModel {
     constructor() {
     	super();
 
@@ -20,6 +20,7 @@ class UserModel extends CrudModel {
 		};
 
 		this.pushFields = {
+			id: 'integer',
 			title: 'string',
 			email: 'string',
 			phone: 'string',

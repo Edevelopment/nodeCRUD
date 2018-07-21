@@ -19,8 +19,6 @@ class CrudModel extends BaseModel{
 
 	    let offset = limit * (page - 1);
 
-	    where = this.prepareLikeRequest(where);
-
 	    let sql = this.prepareFindByQuery(where, orderBy, limit, offset) 
 	            + '; ' + 
 	            this.prepareCountQuery(where);

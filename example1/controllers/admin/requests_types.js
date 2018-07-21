@@ -19,6 +19,7 @@ class Requests_typesController extends CrudController {
 			this.model.db.end();
 		});
 	}
+
 }
 
 module.exports = Requests_typesController;
