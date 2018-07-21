@@ -44,7 +44,6 @@ class 	UserModel extends CrudModel {
     	this.db.query('SELECT * FROM ru_users WHERE email = ?', [email], (err, results, fields) => {
     		this.pushFields['password'] = 'password';
 	        let data = this.prepareFindByResults(results, 1);
-	        console.log(data);
 	        this.helpers.bcrypt.compare(password, data.password, (err, res) => {
 				if (err) { console.error(err); return errCallback()};
 				if (!res) return errCallback();

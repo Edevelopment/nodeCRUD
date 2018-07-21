@@ -81,8 +81,6 @@ class RequestsController extends CrudController {
 				where = 'id = ' + id + ' AND user_id = ' + results.id;
 			}
 
-			console.log(where);
-
 			this.model.findOne(where, (err, results, fields) => {
 				if (err) { console.error(err); return;};
 		

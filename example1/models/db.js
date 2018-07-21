@@ -24,8 +24,14 @@ class DB {
 
     prepareCountQuery(where) {
     	if (typeof where === 'undefined') {
-    		where = 'active=Y';
-    	}
+            where = '';
+        }
+
+        if (where != '') {
+            where += ' AND ';
+        }
+    	
+        where += 'active=1';
 
         return 'SELECT COUNT(*) as count FROM ' + this.tablename + ' WHERE ' + where;
     }
