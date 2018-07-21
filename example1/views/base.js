@@ -5,7 +5,7 @@ class BaseView {
 	constructor(res) {
 		this.res = res;
 
-		this.res.set('Access-Control-Allow-Origin', 'http://localhost:9527');
+		this.res.set('Access-Control-Allow-Origin', 'http://four-d-home-sandbernar.c9users.io:8081');
 		this.res.set('Access-Control-Allow-Credentials', 'true');
 
 		this.lang = lang;

@@ -1,6 +1,6 @@
 "use strict"
 var CrudModel = require('./crudmodel');
-class UserModel extends CrudModel {
+class 	UserModel extends CrudModel {
     constructor() {
     	super();
 
@@ -20,6 +20,7 @@ class UserModel extends CrudModel {
 		};
 
 		this.pushFields = {
+			id: 'integer',
 			title: 'string',
 			email: 'string',
 			phone: 'string',
@@ -43,7 +44,7 @@ class UserModel extends CrudModel {
     	this.db.query('SELECT * FROM ru_users WHERE email = ?', [email], (err, results, fields) => {
     		this.pushFields['password'] = 'password';
 	        let data = this.prepareFindByResults(results, 1);
-	        console.log(data.password);
+	        console.log(data);
 	        this.helpers.bcrypt.compare(password, data.password, (err, res) => {
 				if (err) { console.error(err); return errCallback()};
 				if (!res) return errCallback();

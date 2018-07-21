@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS `ru_comments` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE `ru_users`	CHANGE COLUMN `roles` `roles` SET('admin','user') NULL DEFAULT NULL AFTER `password`;
+ALTER TABLE `ru_users`	CHANGE COLUMN `roles` `roles` ENUM('admin','user') NULL DEFAULT NULL AFTER `password`;
