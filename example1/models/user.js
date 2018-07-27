@@ -1,6 +1,6 @@
 "use strict"
 var CrudModel = require('./crudmodel');
-class 	UserModel extends CrudModel {
+class UserModel extends CrudModel {
     constructor() {
     	super();
 

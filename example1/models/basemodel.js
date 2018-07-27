@@ -14,6 +14,7 @@ class BaseModel extends DB{
 
         this.helpers.strings = require('../helpers/strings');
         this.helpers.mail = require('../helpers/mail');
+        this.helpers.fs = require('fs');
     }
 
 
@@ -76,6 +77,35 @@ class BaseModel extends DB{
         let dt = new this.helpers.dateTime();
         this.pullValue('created', dt.format('x'));
         return this;
+    }
+
+    pullFiles(files, fields, callback, errCallback) {
+        let dt = new this.helpers.dateTime();
+        let i = 0;
+        let pullFileFieldsCount = Object.keys(this.pullFilesFields).length;
+        console.log(files);
+        for (let field in this.pullFilesFields) {
+
+            let runtimeFolder = '';
+            if (this.pullFilesFields[field] == 'file') {
+                runtimeFolder = 'files';
+            } else {
+                runtimeFolder = 'images';
+            }
+
+            let oldpath = files[field].path;
+            let newName = dt.format('x') + '-' + files[field].name;
+            let newpath = './runtime/' + runtimeFolder + '/' + newName;
+
+            this.helpers.fs.rename(oldpath, newpath, (err) => {
+                if (err) { console.log(err); return errCallback();};
+                fields[field] = newName;
+                if (i == pullFileFieldsCount - 1) {
+                    return callback(fields);
+                }
+                i++;
+            });
+        }
     }
 }
 

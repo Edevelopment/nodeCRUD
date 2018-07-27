@@ -1,12 +1,14 @@
 "use strict"
 var BaseView = require('../../views/base.js');
-var UserClass = require('../../models/user.js')
+var UserClass = require('../../models/user.js');
+var formidable = require('formidable');
 class BaseController {
 	constructor(res, req) {
 		this.res = res;
 		this.req = req;
 		this.view = new BaseView(res);
 		this.globalUserModel = new UserClass;
+		this.formParser = formidable;
 	}
 
 	checkIsAdmin(callback) {

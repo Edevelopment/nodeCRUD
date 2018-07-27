@@ -4,27 +4,6 @@ var	router = express.Router();
 var _ = require("underscore");
 var path = require('path');
 var fs = require('fs');
-var multer  = require('multer');
-
-var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        callback(null, 'runtime/images')
-    },
-    filename: function(req, file, callback) {
-        callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-    }
-})
-
-var MAGIC_NUMBERS = {
-	jpg: 'ffd8ffe0',
-	jpg1: 'ffd8ffe1',
-	png: '89504e47',
-	gif: '47494638'
-}
-
-function checkMagicNumbers(magic) {
-	if (magic == MAGIC_NUMBERS.jpg || magic == MAGIC_NUMBERS.jpg1 || magic == MAGIC_NUMBERS.png || magic == MAGIC_NUMBERS.gif) return true
-}
 
 /**
  * Проверка 
@@ -124,7 +103,7 @@ router.post('/user/login', function(req, res, next) {
 router.post('/:controller/create', function(req, res, next) {
 	try {	
 
-		let required = require('../controllers/admin/' + req.params.controller);	
+		let required = require('../controllers/admin/' + req.params.controller);
 		let controller = new required(res, req);
 
 		controller.createAction();
