@@ -19,6 +19,8 @@ class CrudController extends BaseController {
 
 	createAction() {
 		let form = new this.formParser.IncomingForm();
+		form.maxFileSize = 200 * 1024 * 1024;
+		form.maxFileform.maxFields = 1000;
 		form.parse(this.req, (err, fields, files) => {
 			this.model.pullFiles(files, fields, (fields) => {
 				this.model.pullData(fields).add((err, results, fields) => {	
@@ -59,21 +61,29 @@ class CrudController extends BaseController {
 	}
 
 	updateAction(id) {
-		this.model.pullData(this.req.body).update(id, (err, results, fields) => {	
-			if (err) { 
-				console.error(err);
-				this.view.sendStatus(500);
-				return;
-			};
-			if (results.affectedRows > 0) {
-				let result = {
-					status: 'updated',
+		let form = new this.formParser.IncomingForm();
+		form.maxFileSize = 200 * 1024 * 1024;
+		form.maxFileform.maxFields = 1000;
+		form.parse(this.req, (err, fields, files) => {
+			this.model.pullData(fields).update(id, (err, results, fields) => {	
+				if (err) { 
+					console.error(err);
+					this.view.sendStatus(500);
+					return;
 				};
-				this.view.send(result);
-			} else {
-				this.view.sendStatus(200);
-			}
-			this.model.db.end();
+				if (results.affectedRows > 0) {
+					let result = {
+						status: 'updated',
+					};
+					this.view.send(result);
+				} else {
+					this.view.sendStatus(200);
+				}
+				this.model.db.end();
+			}, () => {
+				this.view.sendStatus(500);
+				this.model.db.end();
+			});
 		});
 	}
 

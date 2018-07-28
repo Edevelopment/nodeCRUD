@@ -14,6 +14,7 @@ class BaseModel extends DB{
 
         this.helpers.strings = require('../helpers/strings');
         this.helpers.mail = require('../helpers/mail');
+        this.helpers.file = require('../helpers/file');
         this.helpers.fs = require('fs');
     }
 
@@ -86,14 +87,20 @@ class BaseModel extends DB{
         console.log(files);
         for (let field in this.pullFilesFields) {
 
+            let oldpath = files[field].path;
+            let fileType = files[field].type.split('/').pop();
+
             let runtimeFolder = '';
             if (this.pullFilesFields[field] == 'file') {
                 runtimeFolder = 'files';
+                allowedFileTypes = this.helpers.file.fileTypes;
             } else {
                 runtimeFolder = 'images';
+                allowedFileTypes = this.helpers.file.imageTypes;
             }
 
-            let oldpath = files[field].path;
+            if (typeof allowedFileTypes[fileType] === 'undefined') continue;
+
             let newName = dt.format('x') + '-' + files[field].name;
             let newpath = './runtime/' + runtimeFolder + '/' + newName;
 
