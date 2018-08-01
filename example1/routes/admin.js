@@ -5,6 +5,7 @@ var _ = require("underscore");
 var path = require('path');
 var fs = require('fs');
 
+
 /**
  * Проверка 
  * @param  {[type]} req   [description]
@@ -73,6 +74,22 @@ router.put('/:controller/update/:id', function(req, res, next) {
 	}
 });
 
+
+/* Вызов контроллера и create экшона */
+router.post('/team/create', function(req, res, next) {
+	try {	
+		let required = require('../controllers/admin/team');	
+		let controller = new required(res, req);
+
+		controller.checkIsAdmin(() => {
+			controller.createAction();
+		}) 
+	} catch(e)  {
+		console.error(e);
+		res.sendStatus(404);
+	}
+});
+
 /* Вызов контроллера и create экшона */
 router.post('/:controller/create', function(req, res, next) {
 	try {	
@@ -125,6 +142,7 @@ router.get('/:controller/:action', function(req, res, next) {
 		res.sendStatus(404);
 	}
 });
+
 
 /* Вызов контроллера и update экшона с параметром id
    Данные приходят через PUT */

@@ -18,25 +18,17 @@ class CrudController extends BaseController {
 	}
 
 	createAction() {
-		let form = new this.formParser.IncomingForm();
-		form.parse(this.req, (err, fields, files) => {
-			this.model.pullFiles(files, fields, (fields) => {
-				this.model.pullData(fields).add((err, results, fields) => {	
-					if (err) { 
-						console.error(err);
-						this.view.sendStatus(500);
-						return;
-					};
-					this.view.sendStatus(200);
-					this.model.db.end();
-				}, () => {
-					this.view.sendStatus(400);
-					this.model.db.end();
-				});
-			}, () => {
+		this.model.pullData(this.req.body).add((err, results, fields) => {	
+			if (err) { 
+				console.error(err);
 				this.view.sendStatus(500);
-				this.model.db.end();
-			});
+				return;
+			};
+			this.view.sendStatus(200);
+			this.model.db.end();
+		}, () => {
+			this.view.sendStatus(400);
+			this.model.db.end();
 		});
 	}
 
