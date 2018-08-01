@@ -28,6 +28,35 @@ class UserController extends CrudController {
 		}, () => {this.view.sendStatus(401); return this.res.end();});
 	}
 
+	listAction() {
+		let filter = '1=1';
+		this.globalUserModel.findOne('hash=' + this.model.db.escape(this.req.headers['x-auth']), (err, results, fields) => {
+			if (err) { console.error(err); this.res.send(401); return this.res.end();};
+
+			if (results.length == 0) {
+				this.res.send(401); return this.res.end();
+			};
+
+			if (results.roles == 'user') {
+				this.res.send(401); return this.res.end();
+			}
+			if (results.roles == 'admin') {
+				filter = 'roles=\'user\'';
+			}
+
+			if (this.req.query.filter) {
+				filter += ' AND ';
+				filter += this.model.prepareLikeRequest(this.req.query.filter);
+			}
+
+			this.model.findFilteredData(filter, (err, results, fields) => {
+				if (err) { console.error(err);return;};
+				this.view.send(results);
+				this.model.db.end();
+			}, this.req.query.sort, this.req.query.limit, this.req.query.page);	
+		});
+	}
+
 	checkAuth(next) {
 		if (typeof this.req.headers['x-auth'] !== 'string') {this.res.send(401);  return this.res.end();};
 

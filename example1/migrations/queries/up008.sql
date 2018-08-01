@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS `ru_teams` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` int(11) DEFAULT NULL,
+  `updated` int(11) DEFAULT NULL,
+  `active` int(1) DEFAULT '1',
+  `name` VARCHAR(255) DEFAULT NULL,
+  `phone` VARCHAR(255) DEFAULT NULL,
+  `position` VARCHAR(255) DEFAULT NULL,
+  `time_work` VARCHAR(255) DEFAULT NULL,
+  `email` VARCHAR(255) DEFAULT NULL,
+  `avatar` TEXT DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+

@@ -5,18 +5,10 @@ class CrudController extends BaseController {
 		super(res, req);
 	}
 
-	indexAction() {
-		this.model.findAll((err, results, fields) => {
-			if (err) { console.error(err);return;};
-			this.view.send(results);
-			this.model.db.end();
-		});
-	}
-
 	listAction() {
 		let filter = '';
 		if (this.req.query.filter) {
-			filter = this.req.query.filter;
+			filter = this.model.prepareLikeRequest(this.req.query.filter);
 		}
 		this.model.findFilteredData(filter, (err, results, fields) => {
 			if (err) { console.error(err);return;};
@@ -48,13 +40,17 @@ class CrudController extends BaseController {
 	readAction(id) {
 		this.model.findOne(id, (err, results, fields) => {
 			if (err) { console.error(err); return;};
+
+			if (results.length == 0) {
+				this.res.send(404); return this.res.end();
+			};
+
 			this.view.send(results);
 			this.model.db.end();
 		});
 	}
 
 	updateAction(id) {
-		console.log(this.req.body);
 		this.model.pullData(this.req.body).update(id, (err, results, fields) => {	
 			if (err) { 
 				console.error(err);

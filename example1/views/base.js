@@ -5,7 +5,12 @@ class BaseView {
 	constructor(res) {
 		this.res = res;
 
-		this.res.set('Access-Control-Allow-Origin', 'http://four-d-home-sandbernar.c9users.io:8081');
+		if (process.env.NODE_ENV === 'production') {
+			this.res.set('Access-Control-Allow-Origin', 'http://four-d-home-sandbernar.c9users.io:8081');
+		} else {
+			this.res.set('Access-Control-Allow-Origin', 'http://0.0.0.0:8084');
+		}
+
 		this.res.set('Access-Control-Allow-Credentials', 'true');
 
 		this.lang = lang;

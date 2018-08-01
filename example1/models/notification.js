@@ -18,10 +18,12 @@ class NotificationModel extends CrudModel {
 			text : 'text',
 		};
 
+		this.pullFilesFields = {
+			image: 'image',
+		}
+
     	this.tablename = 'ru_notitfications';
     }
-
-
 }
 
 module.exports = NotificationModel;

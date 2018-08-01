@@ -4,6 +4,8 @@ class BaseModel extends DB{
     constructor() {
         super();
         this.addHelpers();
+        this.pullFilesFields = {
+        }
     }
 
     addHelpers() {
@@ -13,7 +15,9 @@ class BaseModel extends DB{
         this.helpers.dateTime = moment;
 
         this.helpers.strings = require('../helpers/strings');
+        this.helpers.file = require('../helpers/file');
         this.helpers.mail = require('../helpers/mail');
+        this.helpers.fs = require('fs');
     }
 
 
@@ -76,6 +80,49 @@ class BaseModel extends DB{
         let dt = new this.helpers.dateTime();
         this.pullValue('created', dt.format('x'));
         return this;
+    }
+
+    pullImages(image, callback, errCallback){
+         let decodedImg = decodeBase64Image(imgB64Data);
+         let imageBuffer = decodedImg.data;
+         let type = decodedImg.type;
+         let extension = mime.extension(type);
+         let fileName =  "image." + extension;
+         try{
+               fs.writeFileSync("./runtime/images/" + fileName, imageBuffer, 'utf8', (err) => {
+                    callback();
+               });
+            }
+         catch(err){
+            console.log(err);
+            return errCallback();
+         }
+    }
+
+    pullFiles(fields, callback, errCallback) {
+        let dt = new this.helpers.dateTime();
+        let i = 0;
+        let pullFileFieldsCount = Object.keys(this.pullFilesFields).length;
+        if (!pullFileFieldsCount) {
+            return callback(fields);
+        }
+        for (let field in this.pullFilesFields) {
+            let runtimeFolder = 'images';
+            var mime = require('mime');
+            let decodedImg = this.helpers.file.decodeBase64Image(fields[field]);
+            let imageBuffer = decodedImg.data;
+            let type = decodedImg.type;
+            let extension = mime.getExtension(type);
+            let fileName =  dt.format('x') + '.' + extension;
+            let newpath = './runtime/' + runtimeFolder + '/';
+            this.helpers.fs.writeFile(newpath + fileName, imageBuffer, 'utf8', (err) => {
+                fields[field] = fileName;
+                if (i == pullFileFieldsCount - 1) {
+                    return callback(fields);
+                }
+                i++;
+            });
+        }
     }
 }
 
